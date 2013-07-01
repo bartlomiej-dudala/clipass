@@ -7,10 +7,10 @@ use CliPass\Identity;
 use CliPass\Input\StdIn;
 use CliPass\KeePassConnector;
 use CliPass\LoginsProvider;
-use CliPass\Output\Factory;
+use CliPass\Output\Factory As OutputFactory;
 use CliPass\Response\Builder AS ResponseBuilder;
 use CliPass\StringEncoder\Base64Encoder;
-use Gaufrette\Adapter\Local;
+use Gaufrette\Adapter\Local As GaufretteLocalAdapter;
 use Ulrichsg\Getopt;
 use Buzz\Browser As BuzzBrowser;
 
@@ -24,19 +24,17 @@ $container = new Pimple();
 
 $container['identity_path'] = $_SERVER['HOME'];
 
-$container['identity'] = $container->share(function($c) {
-    return new Identity(new Local($c['identity_path']));
+$container['base64Encoder'] = $container->share(function() {
+    return new Base64Encoder();
 });
 
-$container['base64Encoder'] = $container->share(function() {
-        return new Base64Encoder();
-    }
-);
+$container['identity'] = $container->share(function($c) {
+    return new Identity(new GaufretteLocalAdapter($c['identity_path']), $c['base64Encoder']);
+});
 
 $container['crypt'] = $container->share(function() {
-        return new Crypt();
-    }
-);
+    return new Crypt();
+});
 
 $container['buzzBrowser']  = $container->share(function() {
     return new BuzzBrowser();
@@ -51,13 +49,18 @@ $container['associator']  = $container->share(function($c) {
 });
 
 $container['loginsProvider']  = $container->share(function($c) {
-    return new LoginsProvider($c['identity'], $c['crypt'], $c['base64Encoder'], $c['buzzBrowser'], $c['responseBuilder']);
+    return new LoginsProvider(
+        $c['identity'],
+        $c['crypt'],
+        $c['base64Encoder'],
+        $c['buzzBrowser'],
+        $c['responseBuilder']
+    );
 });
 
 $container['keePassConnector']  = $container->share(function($c) {
     return new KeePassConnector($c['associator'], $c['loginsProvider']);
 });
 
-$command = new Command(new Getopt(), new StdIn(), new Factory(), $container['keePassConnector']);
+$command = new Command(new Getopt(), new StdIn(), new OutputFactory(), $container['keePassConnector']);
 $command->execute();
-

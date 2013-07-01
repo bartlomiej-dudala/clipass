@@ -2,6 +2,7 @@
 
 namespace CliPass;
 
+use CliPass\StringEncoder\Base64Encoder;
 use Gaufrette\Filesystem;
 use Gaufrette\Adapter;
 
@@ -21,14 +22,20 @@ class Identity
     /**
      * @var \Gaufrette\Filesystem
      */
-    private $storage;
+    protected $storage;
+
+    /** @var  Base64Encoder */
+    protected $base64Encoder;
+
 
     /**
      * @param \Gaufrette\Adapter $storageAdapter
      */
-    public function __construct(Adapter $storageAdapter)
+    public function __construct(Adapter $storageAdapter, Base64Encoder $base64Encoder)
     {
         $this->storage = new Filesystem($storageAdapter);
+        $this->base64Encoder = $base64Encoder;
+
         $this->loadIdentityFromStorage();
     }
 
@@ -66,7 +73,9 @@ class Identity
 
     public function saveInStorage()
     {
-        $identityData = base64_encode($this->keyName) . "\n" . base64_encode($this->key);
+        $identityData = $this->base64Encoder->encode($this->keyName) . "\n"
+            . $this->base64Encoder->encode($this->key);
+
         $this->storage->write(self::STORAGE_KEY, $identityData);
     }
 
@@ -78,8 +87,8 @@ class Identity
         $lines = explode("\n", $this->storage->read(self::STORAGE_KEY));
 
         if(count($lines) >= 2) {
-            $this->keyName = base64_decode($lines[0]);
-            $this->key = base64_decode($lines[1]);
+            $this->keyName = $this->base64Encoder->decode($lines[0]);
+            $this->key = $this->base64Encoder->decode($lines[1]);
         }
     }
 
