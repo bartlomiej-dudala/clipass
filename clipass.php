@@ -60,3 +60,4 @@ $container['keePassConnector']  = $container->share(function($c) {
 
 $command = new Command(new Getopt(), new StdIn(), new Factory(), $container['keePassConnector']);
 $command->execute();
+
