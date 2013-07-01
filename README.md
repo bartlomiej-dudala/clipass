@@ -18,7 +18,7 @@ Requirements
 Installation
 ------------
 Firstly you must install KeePassHttp plugin into your KeePass installation (https://github.com/pfn/keepasshttp).
-Then download CliPass [url] and composer (into the same directory) http://getcomposer.org/download/ 
+Then download CliPass https://github.com/bartlomiej-dudala/clipass.git and composer (into the same directory) http://getcomposer.org/download/
 
 And then...
 
@@ -42,16 +42,20 @@ Usefull tips
 ------------
 * it is usefull to make an executable file somewhere in the $PATH e.g. /usr/local/bin/clipass
 
-    #!/bin/bash
-    php /pathToCliPass/clipass.php $1 $2 $3 $4
-
+```Batchfile
+#!/bin/bash
+php /pathToCliPass/clipass.php $1 $2 $3 $4
+```
 * running as git-credential-helper: e.g. /usr/local/bin/git-credential-clipass
 
-    clipass --output-adapter=git-credential-helper --key-prefix=git-credential- --git-command=$1
-
+```Batchfile
+clipass --output-adapter=git-credential-helper --key-prefix=git-credential- --git-command=$1
+```
 * copy password to clipboard (with xclip):
 
-    php /pathToCliPass/clipass.php --key=KEY | xclip -i -selection clipboard
+```Batchfile
+php /pathToCliPass/clipass.php --key=KEY | xclip -i -selection clipboard
+```
 
 Enjoy!
  
