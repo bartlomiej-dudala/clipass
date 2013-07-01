@@ -1,0 +1,20 @@
+{
+    "name": "bdudala/clipass",
+    "description": "CLI access to KeePass2",
+    "autoload": {
+        "psr-0": { "CliPass": "src/" }
+     },
+    "require": {
+        "kriswallsmith/buzz": "dev-master",
+        "ulrichsg/getopt-php": "dev-master",
+        "knplabs/gaufrette": "dev-master",
+        "phake/phake": "1.*",
+        "pimple/pimple": "1.*"
+    },
+    "authors": [
+        {
+            "name": "Bartłomiej Dudała",
+            "email": "bartlomiej.dudala@gmail.com"
+        }
+    ]
+}
