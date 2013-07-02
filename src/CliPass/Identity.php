@@ -73,6 +73,10 @@ class Identity
 
     public function saveInStorage()
     {
+        if($this->storage->getAdapter()->exists(self::STORAGE_KEY)) {
+            $this->storage->getAdapter()->delete(self::STORAGE_KEY);
+        }
+
         $identityData = $this->base64Encoder->encode($this->keyName) . "\n"
             . $this->base64Encoder->encode($this->key);
 

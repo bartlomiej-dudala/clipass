@@ -68,4 +68,17 @@ class IdentityTest extends \PHPUnit_Framework_TestCase
         $identity = new Identity($this->storageAdapter, $this->base64Encoder);
         $this->assertTrue($identity->isEmpty());
     }
+
+    /** @test */
+    public function should_overwrite_identity()
+    {
+        $this->storageAdapter->write('.clipass.identity', 'content');
+
+        Phake::when($this->base64Encoder)->encode(Phake::anyParameters())->thenReturn('encoded');
+
+
+        $this->getFilledIdentity()->saveInStorage();
+        $this->assertTrue($this->storageAdapter->exists('.clipass.identity'));
+        $this->assertSame("encoded\nencoded", $this->storageAdapter->read('.clipass.identity'));
+    }
 }
