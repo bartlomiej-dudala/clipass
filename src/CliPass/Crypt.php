@@ -4,14 +4,10 @@ namespace CliPass;
 
 class Crypt
 {
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $key;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $iv;
 
     /**

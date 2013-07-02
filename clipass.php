@@ -22,7 +22,12 @@ umask(0066);
 
 $container = new Pimple();
 
-$container['identity_path'] = $_SERVER['HOME'];
+if(isset($_SERVER['USERPROFILE'])) {
+    $container['identity_path'] = $_SERVER['USERPROFILE'];
+}
+else {
+    $container['identity_path'] = $_SERVER['HOME'];
+}
 
 $container['base64Encoder'] = $container->share(function() {
     return new Base64Encoder();

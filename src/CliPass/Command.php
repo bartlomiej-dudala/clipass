@@ -44,6 +44,7 @@ class Command
         ));
 
         $this->getopt->parse();
+
         if(!count($this->getopt->getOptions())) {
             $this->getopt->showHelp();
 
@@ -63,7 +64,6 @@ class Command
 
         $output = $this->outputFactory->build('OnlyFirstPassword');
         $output->output($entries);
-
     }
 
     /**
