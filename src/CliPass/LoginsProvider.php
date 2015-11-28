@@ -56,7 +56,7 @@ class LoginsProvider
         $request = new GetLogins($this->crypt, $this->identity, $this->base64Encoder);
         $request->setSearchKey($name);
 
-        $buzzResponse = $this->buzz->post('http://localhost:19455', array(), $request->getJSONEncodedParams($name));
+        $buzzResponse = $this->buzz->post('http://localhost:19455', array('Content-Type: application/json'), $request->getJSONEncodedParams($name));
 
         /** @var ResponseInterface $response */
         $response = $this->responseBuilder->build($buzzResponse, $this->identity, $this->crypt, $this->base64Encoder);

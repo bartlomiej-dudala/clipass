@@ -53,7 +53,7 @@ class Associator
 
         $request = new Associate($this->crypt, $this->identity, $this->base64Encoder);
 
-        $buzzResponse = $this->buzz->post('http://localhost:19455', array(), $request->getJSONEncodedParams());
+        $buzzResponse = $this->buzz->post('http://localhost:19455', array('Content-Type: application/json'), $request->getJSONEncodedParams());
 
         $response = $this->responseBuilder->build($buzzResponse, $this->identity, $this->crypt, $this->base64Encoder);
 
@@ -71,7 +71,7 @@ class Associator
     {
         $request = new TestAssociate($this->crypt, $this->identity, $this->base64Encoder);
 
-        $buzzResponse = $this->buzz->post('http://localhost:19455', array(), $request->getJSONEncodedParams());
+        $buzzResponse = $this->buzz->post('http://localhost:19455', array('Content-Type: application/json'), $request->getJSONEncodedParams());
         $response = $this->responseBuilder->build($buzzResponse, $this->identity, $this->crypt, $this->base64Encoder);
 
         if($response->validate()) {
